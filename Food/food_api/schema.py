@@ -2,10 +2,10 @@ import graphene
 
 from graphene_django.types import DjangoObjectType
 
-from .models import Recipe, Ingredient
+from .models import Recipe, Ingredient, IngredientRecipe
 
 
-class CategoryType(DjangoObjectType):
+class RecipeType(DjangoObjectType):
     class Meta:
         model = Recipe
 
@@ -15,16 +15,21 @@ class IngredientType(DjangoObjectType):
         model = Ingredient
 
 
+class IngredientRecipeType(DjangoObjectType):
+    class Meta:
+        model = IngredientRecipe
+
+
 class QueryMixin(object):
-    all_categories = graphene.List(CategoryType)
+    all_recipes = graphene.List(RecipeType)
     all_ingredients = graphene.List(IngredientType)
 
-    def resolve_all_categories(self, info, **kwargs):
+    def resolve_all_recipes(self, info, **kwargs):
         return Recipe.objects.all()
 
     def resolve_all_ingredients(self, info, **kwargs):
         # We can easily optimize query count in the resolve method
-        return Ingredient.objects.select_related('category').all()
+        return Ingredient.objects.select_related('ingredients').all()
 
 
 class Query(QueryMixin, graphene.ObjectType):

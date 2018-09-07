@@ -26,5 +26,5 @@ class IngredientRecipe(models.Model):
         return '{} - {}'.format(self.recipe.name, self.ingredient.name)
 
     ingredient = models.ForeignKey(Ingredient, on_delete='cascade')
-    recipe = models.ForeignKey(Recipe, on_delete='cascade')
+    recipe = models.ForeignKey(Recipe, on_delete='cascade', related_name='ingredient_quantity')
     quantity = models.FloatField(blank=True, null=True)

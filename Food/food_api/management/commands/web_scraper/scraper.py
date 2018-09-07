@@ -25,15 +25,9 @@ class MarmiScrap:
             recipe.get_recipe_steps()
 
             recipe_name = recipe.get_recipe_name()
-            # print(recipe.get_recipe_name())
             nb_person = recipe.get_nb_person()
             ingredients = recipe.get_ingredients()
-            # for ingredient in recipe.get_ingredients():
-            #       print('{}{}'.format(ingredient['ingredient_quantity'], ingredient['ingredient_name']))
             steps = recipe.get_recipe_steps()
-            # for step in recipe.get_recipe_steps():
-            #     print('\t- {}'.format(step))
-            # print('\n\n')
             recipe_data.append({'recipe_name': recipe_name,
                                 'ingredients': ingredients,
                                 'steps': steps})
