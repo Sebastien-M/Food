@@ -15,6 +15,7 @@ class Command(BaseCommand):
         """
         Take ingredient(s) as argument and find recipes associated
         """
+        added_recipes = 0
         for ingredient in options['ingredients']:
             scraper = MarmiScrap(ingredient)
             recipe_data = scraper.extract_recipes_data()
@@ -22,7 +23,8 @@ class Command(BaseCommand):
                 recipe_name = recipe['recipe_name']
                 ingredients = recipe['ingredients']
                 steps = recipe['steps']
-                self.save_data(recipe_name, ingredients, steps)
+                added_recipes += self.save_data(recipe_name, ingredients, steps)
+            print('{} recipes added'.format(added_recipes))
 
     def save_data(self, recipe_name, ingredients, steps):
         """
@@ -33,28 +35,34 @@ class Command(BaseCommand):
         :param steps: steps of the recipe
         :type ingredients:list[dict]
         """
+        counter = 0
         recipe = self.add_recipe_to_db(recipe_name, steps)
         if recipe:
             self.add_ingredient_to_db(ingredients, recipe)
+            counter += 1
+            return counter
+        return counter
 
     def add_recipe_to_db(self, recipe_name, steps):
         combined_steps = ''
-        for step in steps:
-            combined_steps += step + ';'
-        try:
-            recipe = Recipe(name=recipe_name, steps=combined_steps)
-            recipe.save()
-            self.stdout.write(self.style.SUCCESS('Successfully fetched recipe {}'.format(recipe_name)))
-            return recipe
-        except IntegrityError:
-            self.stdout.write(self.style.ERROR(
-                'Error while adding recipe \'{}\''.format(recipe_name)))
+        if Recipe.objects.filter(name=recipe_name).exists():
+            return 0
+        else:
+            for step in steps:
+                combined_steps += step + ';'
+            try:
+                recipe = Recipe(name=recipe_name, steps=combined_steps)
+                recipe.save()
+                return recipe
+            except IntegrityError:
+                pass
 
     def add_ingredient_to_db(self, ingredients, recipe_instance):
         for ingredient in ingredients:
             if Ingredient.objects.filter(name=ingredient['ingredient_name']).exists():
-                self.stdout.write(self.style.ERROR(
-                    'Ingredient \'{}\' is already existing'.format(ingredient['ingredient_name'])))
+                pass
+                # self.stdout.write(self.style.ERROR(
+                #     'Ingredient \'{}\' is already existing'.format(ingredient['ingredient_name'])))
             else:
                 ingredient_instance = Ingredient(name=ingredient['ingredient_name'])
                 ingredient_instance.save()

@@ -8,11 +8,13 @@ from .models import Recipe, Ingredient, IngredientRecipe
 class RecipeType(DjangoObjectType):
     class Meta:
         model = Recipe
+        filter_fields = ['id']
 
 
 class IngredientType(DjangoObjectType):
     class Meta:
         model = Ingredient
+        filter_fields = ['id']
 
 
 class IngredientRecipeType(DjangoObjectType):
@@ -39,3 +41,22 @@ class Query(QueryMixin, graphene.ObjectType):
 
 
 schema = graphene.Schema(query=Query)
+
+"""
+Query example : 
+    query{
+      allRecipes{
+        id,
+        name,
+        steps,
+        ingredientQuantity{
+          quantity,
+          ingredient{
+            name
+          }
+        }
+      }
+    }
+    
+Wrap request inside 'query key' for json
+"""

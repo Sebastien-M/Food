@@ -9,7 +9,7 @@ class MarmiScrap:
         self.root_url = 'http://www.marmiton.org'
         self.url = 'http://www.marmiton.org/recettes/recherche.aspx?aqt=' + recherche
 
-    def get_root_html(self):
+    def get_root_html(self) -> list:
         html = requests.get(self.url)
         html_content = str(html.content)
         soup = BeautifulSoup(html_content, "html.parser")
@@ -17,6 +17,7 @@ class MarmiScrap:
         return all_recipes
 
     def extract_recipes_data(self):
+        counter = 0
         recipes = self.get_root_html()
         recipe_data = []
         for recipe_html in recipes:
@@ -31,4 +32,6 @@ class MarmiScrap:
             recipe_data.append({'recipe_name': recipe_name,
                                 'ingredients': ingredients,
                                 'steps': steps})
+            counter += 1
+
         return recipe_data
