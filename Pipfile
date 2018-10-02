@@ -10,7 +10,7 @@ graphene-django = ">=2.0"
 mysqlclient = "*"
 requests = "*"
 "bs4" = "*"
-graphene-permissions = "*"
+django-graphql-jwt = "*"
 
 [dev-packages]
 

@@ -1,4 +1,5 @@
 import graphene
+import graphql_jwt
 from food_api.schemas.users import schema as user_schema
 from food_api.schemas.ingredients import schema as ingredient_schema
 from food_api.schemas.recipes import schema as recipe_schema
@@ -15,26 +16,9 @@ class Query(ingredient_schema.Query,
 
 
 class Mutation(user_schema.Mutation, graphene.ObjectType):
-    pass
+    token_auth = graphql_jwt.ObtainJSONWebToken.Field()
+    verify_token = graphql_jwt.Verify.Field()
+    refresh_token = graphql_jwt.Refresh.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
-
-"""
-Query example : 
-    query{
-      allRecipes{
-        id,
-        name,
-        steps,
-        ingredientQuantity{
-          quantity,
-          ingredient{
-            name
-          }
-        }
-      }
-    }
-    
-Wrap request inside 'query key' for json
-"""
