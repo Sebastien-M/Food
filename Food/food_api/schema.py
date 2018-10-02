@@ -1,46 +1,24 @@
 import graphene
-
-from graphene_django.types import DjangoObjectType
-
-from .models import Recipe, Ingredient, IngredientRecipe
-
-
-class RecipeType(DjangoObjectType):
-    class Meta:
-        model = Recipe
-        filter_fields = ['id']
+from food_api.schemas.users import schema as user_schema
+from food_api.schemas.ingredients import schema as ingredient_schema
+from food_api.schemas.recipes import schema as recipe_schema
 
 
-class IngredientType(DjangoObjectType):
-    class Meta:
-        model = Ingredient
-        filter_fields = ['id']
+# class IngredientRecipeType(DjangoObjectType):
+#     class Meta:
+#         model = IngredientRecipe
 
-
-class IngredientRecipeType(DjangoObjectType):
-    class Meta:
-        model = IngredientRecipe
-
-
-class QueryMixin(object):
-    all_recipes = graphene.List(RecipeType)
-    all_ingredients = graphene.List(IngredientType)
-
-    def resolve_all_recipes(self, info, **kwargs):
-        return Recipe.objects.all()
-
-    def resolve_all_ingredients(self, info, **kwargs):
-        # We can easily optimize query count in the resolve method
-        return Ingredient.objects.select_related('ingredients').all()
-
-
-class Query(QueryMixin, graphene.ObjectType):
-    # This class will inherit from multiple Queries
-    # as we begin to add more apps to our project
+class Query(ingredient_schema.Query,
+            recipe_schema.Query,
+            graphene.ObjectType):
     pass
 
 
-schema = graphene.Schema(query=Query)
+class Mutation(user_schema.Mutation, graphene.ObjectType):
+    pass
+
+
+schema = graphene.Schema(query=Query, mutation=Mutation)
 
 """
 Query example : 
