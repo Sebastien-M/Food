@@ -11,6 +11,7 @@ from food_api.schemas.recipes import schema as recipe_schema
 
 class Query(ingredient_schema.Query,
             recipe_schema.Query,
+            user_schema.Query,
             graphene.ObjectType):
     pass
 
