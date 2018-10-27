@@ -11,6 +11,7 @@ mysqlclient = "*"
 requests = "*"
 "bs4" = "*"
 django-graphql-jwt = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 

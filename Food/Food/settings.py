@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'graphene_django',
     'food_api',
+    'corsheaders',
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -54,9 +55,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'graphql_jwt.middleware.JSONWebTokenMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'Food.urls'
+CORS_ORIGIN_ALLOW_ALL = True
 
 TEMPLATES = [
     {

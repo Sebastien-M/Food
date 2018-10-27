@@ -13,7 +13,7 @@ class MarmiScrap:
         html = requests.get(self.url)
         html_content = str(html.content)
         soup = BeautifulSoup(html_content, "html.parser")
-        all_recipes = soup.find_all('a', 'recipe-card')
+        all_recipes = soup.find_all('a', 'recipe-card-link')
         return all_recipes
 
     def extract_recipes_data(self):

@@ -14,4 +14,7 @@ class Query(graphene.ObjectType):
     all_recipes = graphene.List(RecipeType)
 
     def resolve_all_recipes(self, info, **kwargs):
+        user = info.context.user
+        if user.is_anonymous:
+            raise Exception('Not logged!')
         return Recipe.objects.all()

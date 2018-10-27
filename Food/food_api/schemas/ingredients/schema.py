@@ -15,4 +15,7 @@ class Query(graphene.ObjectType):
 
     def resolve_all_ingredients(self, info, **kwargs):
         # We can easily optimize query count in the resolve method
-        return Ingredient.objects.select_related('ingredients').all()
+        user = info.context.user
+        if user.is_anonymous:
+            raise Exception('Not logged!')
+        return Ingredient.objects.all()
