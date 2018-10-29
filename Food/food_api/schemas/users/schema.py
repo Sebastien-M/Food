@@ -1,6 +1,7 @@
 import graphene
 from django.contrib.auth.models import User
 from graphene_django import DjangoObjectType
+from food_api.models import WeekMenu
 
 
 class UserType(DjangoObjectType):
@@ -15,16 +16,19 @@ class CreateUser(graphene.Mutation):
         username = graphene.String(required=True)
         password = graphene.String(required=True)
         email = graphene.String(required=True)
+        first_name = graphene.String(required=True)
+        last_name = graphene.String(required=True)
 
-    def mutate(self, info, first_name, last_name, password, email):
+    def mutate(self, info, username, first_name, last_name, password, email):
         user = User(
+            username=username,
             first_name=first_name,
             last_name=last_name,
             email=email,
         )
         user.set_password(password)
         user.save()
-
+        WeekMenu(user_id=user).save()
         return CreateUser(user=user)
 
 

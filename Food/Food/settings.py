@@ -61,7 +61,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'Food.urls'
 CORS_ORIGIN_ALLOW_ALL = True
-
+CORS_ORIGIN_WHITELIST = (
+    'localhost',
+    '127.0.0.1',
+    '0.0.0.0'
+)
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -113,7 +117,10 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 GRAPHENE = {
-    'SCHEMA': 'food_api.schema.schema'  # Where Graphene schema lives
+    'SCHEMA': 'food_api.schema.schema',
+    'MIDDLEWARE': [
+        'graphql_jwt.middleware.JSONWebTokenMiddleware',
+    ],
 }
 
 # Internationalization
