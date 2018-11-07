@@ -5,18 +5,29 @@ from food_api.management.commands.web_scraper.Recipe import Recipe
 
 class MarmiScrap:
     def __init__(self, recherche):
+        """
+        Class constructor
+
+        :param recherche: Ingredient name
+        """
         self.recherche = recherche
         self.root_url = 'http://www.marmiton.org'
-        self.url = 'http://www.marmiton.org/recettes/recherche.aspx?aqt=' + recherche
+        self.search_url = 'http://www.marmiton.org/recettes/recherche.aspx?aqt=' + recherche
 
     def get_root_html(self) -> list:
-        html = requests.get(self.url)
+        """
+        Returns all html recipes
+        """
+        html = requests.get(self.search_url)
         html_content = str(html.content)
         soup = BeautifulSoup(html_content, "html.parser")
         all_recipes = soup.find_all('a', 'recipe-card-link')
         return all_recipes
 
-    def extract_recipes_data(self):
+    def extract_recipes_data(self) -> list:
+        """
+        Returns a dict containing recipe informations
+        """
         counter = 0
         recipes = self.get_root_html()
         recipe_data = []
@@ -33,5 +44,4 @@ class MarmiScrap:
                                 'ingredients': ingredients,
                                 'steps': steps})
             counter += 1
-
         return recipe_data

@@ -5,18 +5,12 @@ from food_api.schemas.ingredients import schema as ingredient_schema
 from food_api.schemas.recipes import schema as recipe_schema
 
 
-# class IngredientRecipeType(DjangoObjectType):
-#     class Meta:
-#         model = IngredientRecipe
-
-class Query(ingredient_schema.Query,
-            recipe_schema.Query,
-            user_schema.Query,
-            graphene.ObjectType):
+class Query(ingredient_schema.Query, recipe_schema.Query, user_schema.Query, graphene.ObjectType):
     pass
 
 
-class Mutation(user_schema.Mutation, graphene.ObjectType):
+# class Mutation(user_schema.Mutation, recipe_schema.Mutation, graphene.ObjectType):
+class Mutation(user_schema.Mutation, recipe_schema.Mutation, graphene.ObjectType):
     token_auth = graphql_jwt.ObtainJSONWebToken.Field()
     verify_token = graphql_jwt.Verify.Field()
     refresh_token = graphql_jwt.Refresh.Field()

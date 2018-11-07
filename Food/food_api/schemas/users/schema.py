@@ -1,7 +1,8 @@
 import graphene
+
 from django.contrib.auth.models import User
 from graphene_django import DjangoObjectType
-from food_api.models import WeekMenu
+from food_api.models import DailyRecipe
 
 
 class UserType(DjangoObjectType):
@@ -28,7 +29,7 @@ class CreateUser(graphene.Mutation):
         )
         user.set_password(password)
         user.save()
-        WeekMenu(user_id=user).save()
+        DailyRecipe(user_id=user).save()
         return CreateUser(user=user)
 
 

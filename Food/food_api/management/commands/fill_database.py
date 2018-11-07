@@ -60,13 +60,14 @@ class Command(BaseCommand):
     def add_ingredient_to_db(self, ingredients, recipe_instance):
         for ingredient in ingredients:
             if Ingredient.objects.filter(name=ingredient['ingredient_name']).exists():
-                pass
-                # self.stdout.write(self.style.ERROR(
-                #     'Ingredient \'{}\' is already existing'.format(ingredient['ingredient_name'])))
+                ingredient_instance = Ingredient.objects.get(name=ingredient['ingredient_name'])
+                ingredient_recipe = IngredientRecipe(ingredient=ingredient_instance, recipe=recipe_instance,
+                                                     quantity=ingredient['ingredient_quantity'])
+                ingredient_recipe.save()
             else:
                 ingredient_instance = Ingredient(name=ingredient['ingredient_name'])
                 ingredient_instance.save()
                 ingredient_recipe = IngredientRecipe(ingredient=ingredient_instance, recipe=recipe_instance,
                                                      quantity=ingredient['ingredient_quantity'])
-                ingredient_recipe.save()
+            ingredient_recipe.save()
 
