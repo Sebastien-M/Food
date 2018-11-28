@@ -13,6 +13,7 @@ requests = "*"
 django-graphql-jwt = "*"
 django-cors-headers = "*"
 django-filter = "*"
+uwsgi = "*"
 
 [dev-packages]
 
