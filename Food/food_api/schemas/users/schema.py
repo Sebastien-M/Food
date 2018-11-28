@@ -29,7 +29,7 @@ class CreateUser(graphene.Mutation):
         )
         user.set_password(password)
         user.save()
-        DailyRecipe(user_id=user).save()
+        DailyRecipe(user=user).save()
         return CreateUser(user=user)
 
 

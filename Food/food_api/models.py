@@ -38,5 +38,12 @@ class DailyRecipe(models.Model):
     day = models.DateField(default=datetime.datetime.now(), db_index=True)
     recipe = models.ForeignKey(Recipe, on_delete='cascade', related_name='daily_recipe', unique=False, blank=True, null=True)
 
-    # def __str__(self):
-    #     return self.day
+    def __str__(self):
+        return '{} - {}'.format(self.user.username, str(self.day))
+
+
+class ShoppingListItem(models.Model):
+    user = models.ForeignKey(User, related_name='shopping_list', on_delete='cascade')
+    ingredient = models.CharField(max_length=255)
+    quantity = models.CharField(max_length=10, null=True, blank=True)
+    bought = models.BooleanField(default=False, blank=True, null=True)

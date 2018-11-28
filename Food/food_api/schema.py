@@ -9,7 +9,6 @@ class Query(ingredient_schema.Query, recipe_schema.Query, user_schema.Query, gra
     pass
 
 
-# class Mutation(user_schema.Mutation, recipe_schema.Mutation, graphene.ObjectType):
 class Mutation(user_schema.Mutation, recipe_schema.Mutation, graphene.ObjectType):
     token_auth = graphql_jwt.ObtainJSONWebToken.Field()
     verify_token = graphql_jwt.Verify.Field()
